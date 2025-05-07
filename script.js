@@ -39,63 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Application State ---
     // Store the absolute original files that the IDE starts with
     const originalDefaultFiles = Object.freeze(JSON.parse(JSON.stringify({
-        'index.html': {
-            content: `<!DOCTYPE html>
-<html>
-<head>
-    <title>My Awesome Page</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <h1>Hello, Fifth Graders!</h1>
-    <p>Edit the HTML, CSS, or JS file and click Run!</p>
-    <button id="myButton">Click Me!</button>
-    <script src="script.js"></script>
-</body>
-</html>`,
-            language: 'xml', 
-            type: 'web'
-        },
-        'style.css': {
-            content: `body {
-    font-family: sans-serif;
-    background-color: #f0f8ff;
-    text-align: center;
-    padding-top: 50px;
-}
-
-h1 {
-    color: navy;
-}
-
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-}
-
-button:hover {
-    background-color: #45a049;
-}`,
-            language: 'css',
-            type: 'web'
-        },
-        'script.js': {
-            content: `console.log("Hello from the Web IDE script!");
-
-const button = document.getElementById('myButton');
-button.addEventListener('click', () => {
-    alert('You clicked the button!');
-});
-
-// Try changing the alert message!`,
-            language: 'javascript',
-            type: 'web'
-        },
         'hello.py': {
             content: `# Welcome to Python!
 # Try changing the message below and click Run.
@@ -104,55 +47,317 @@ print("This output goes to the console.")`,
             language: 'python',
             type: 'python'
         },
-        'notes.ftai': {
-            content: `@ftai v2.0
+        'fireworks 2/index.html': {
+            content: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fireworks Name Demo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="title">Fireworks Name Celebration!</h1>
+        <div id="instructions">
+            Enter your name and click the button to start your personalized fireworks!
+        </div>
+        <button id="startButton">Launch My Fireworks!</button>
+        <div id="countdown" class="hidden"></div>
+        <div id="message" class="hidden"></div>
+        <div id="fireworks-container"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>`,
+            language: 'xml', 
+            type: 'web'
+        },
+        'fireworks 2/style.css': {
+            content: `* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+}
 
-@document
-title: My Presentation Notes
-author: Teacher
-schema: basic_notes
-tags: [demo, ide, fifth-grade]
+body {
+    background-color: #121212;
+    color: #ffffff;
+    height: 100vh;
+    overflow: hidden;
+}
 
----
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    padding: 20px;
+}
 
-This is where I can keep notes for the class.
-Remember to explain:
-- What HTML does (structure)
-- What CSS does (style)
-- What JavaScript does (interaction)
-- How Python is different (runs differently)
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: #ff6b6b;
+    text-shadow: 0 0 10px #ff6b6b;
+}
 
----
+#instructions {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #4ecdc4;
+    max-width: 80%;
+}
 
-@task
-id: 1
-description: Show HTML editing
-status: open
+button {
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 0 15px rgba(255, 107, 107, 0.5);
+}
 
-@end
+button:hover {
+    background-color: #ff8e8e;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.7);
+}
 
-@task
-id: 2
-description: Show CSS editing
-status: open
+.hidden {
+    display: none;
+}
 
-@end
+#countdown {
+    font-size: 6rem;
+    font-weight: bold;
+    color: #ffbe0b;
+    text-shadow: 0 0 20px #ffbe0b;
+    animation: pulse 1s infinite alternate;
+}
 
-@task
-id: 3
-description: Show JS editing
-status: open
+#message {
+    font-size: 2.5rem;
+    line-height: 1.4;
+    max-width: 80%;
+    margin: 0 auto;
+    word-wrap: break-word;
+    animation: rainbow 5s infinite;
+    position: relative; /* To ensure it can stack above fireworks if any */
+    z-index: 2; /* Higher than fireworks-container */
+}
 
-@end
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.1);
+    }
+}
 
-@task
-id: 4
-description: Show Python print()
-status: open
+@keyframes rainbow {
+    0% { color: #ff595e; }
+    14% { color: #ffca3a; }
+    28% { color: #8ac926; }
+    42% { color: #1982c4; }
+    57% { color: #6a4c93; }
+    71% { color: #f15bb5; }
+    85% { color: #00bbf9; }
+    100% { color: #ff595e; }
+}
 
-@end`,
-            language: 'markdown', 
-            type: 'ftai'
+#fireworks-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* So it doesn't interfere with underlying content if any */
+    z-index: 1; /* Behind message but above background */
+    overflow: hidden;
+}
+
+.firework {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transform-origin: center;
+    animation: explode 1s forwards;
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(20);
+        opacity: 0;
+    }
+}
+
+.particle {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    animation: fly 1s forwards;
+}
+
+@keyframes fly {
+    0% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty));
+        opacity: 0;
+    }
+}`,
+            language: 'css',
+            type: 'web'
+        },
+        'fireworks 2/script.js': {
+            content: `// Wait for the DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Get DOM elements
+    const startButton = document.getElementById('startButton');
+    const countdownElement = document.getElementById('countdown');
+    const messageElement = document.getElementById('message');
+    const instructionsElement = document.getElementById('instructions');
+    const titleElement = document.getElementById('title');
+    const fireworksContainer = document.getElementById('fireworks-container');
+    
+    // Start button click handler
+    startButton.addEventListener('click', function() {
+        // Get the student's name
+        const name = prompt('What is your name?');
+        
+        // Continue only if a name was entered
+        if (name && name.trim() !== '') {
+            // Hide instructions and button
+            if(startButton) startButton.classList.add('hidden');
+            if(instructionsElement) instructionsElement.classList.add('hidden');
+            if(titleElement) titleElement.classList.add('hidden');
+            
+            // Show countdown
+            if(countdownElement) countdownElement.classList.remove('hidden');
+            
+            // Start countdown
+            startCountdown(name);
+        }
+    });
+    
+    // Function to handle the countdown and show fireworks
+    function startCountdown(name) {
+        let count = 3;
+        
+        if(countdownElement) countdownElement.textContent = count;
+        
+        const countdownInterval = setInterval(function() {
+            count--;
+            
+            if (count > 0) {
+                if(countdownElement) countdownElement.textContent = count;
+            } else {
+                clearInterval(countdownInterval);
+                
+                if(countdownElement) countdownElement.textContent = '💥 BOOM 💥';
+                
+                setTimeout(function() {
+                    if(countdownElement) countdownElement.classList.add('hidden');
+                    
+                    if(messageElement) {
+                        messageElement.innerHTML = \`🎆🎇 You're amazing, \${name}! 🎇🎆\`;
+                        messageElement.classList.remove('hidden');
+                    }
+                    
+                    createFireworks();
+                    
+                    setTimeout(function() {
+                        if(startButton) startButton.classList.remove('hidden');
+                        if(instructionsElement) instructionsElement.classList.remove('hidden');
+                        if(titleElement) titleElement.classList.remove('hidden');
+                        if(messageElement) messageElement.classList.add('hidden');
+                        clearFireworks();
+                    }, 10000); // Reset after 10 seconds
+                }, 1500);
+            }
+        }, 1000);
+    }
+    
+    // Function to create fireworks
+    function createFireworks() {
+        for (let i = 0; i < 30; i++) { // Increased for better spread
+            setTimeout(function() {
+                createSingleFirework();
+            }, i * 200); // Stagger fireworks
+        }
+    }
+    
+    // Function to create a single firework
+    function createSingleFirework() {
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * (window.innerHeight * 0.6) + window.innerHeight * 0.2;
+        
+        const firework = document.createElement('div');
+        firework.classList.add('firework');
+        firework.style.left = \`\${x}px\`;
+        firework.style.top = \`\${y}px\`;
+        
+        const colors = ['#ff595e', '#ffca3a', '#8ac926', '#1982c4', '#6a4c93', '#f15bb5', '#00bbf9'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        firework.style.backgroundColor = color;
+        
+        if(fireworksContainer) fireworksContainer.appendChild(firework);
+        
+        createParticles(x, y, color);
+        
+        setTimeout(function() {
+            firework.remove();
+        }, 1000);
+    }
+    
+    // Function to create particles for a firework
+    function createParticles(x, y, color) {
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.left = \`\${x}px\`;
+            particle.style.top = \`\${y}px\`;
+            particle.style.backgroundColor = color;
+            
+            const angle = Math.random() * Math.PI * 2;
+            const distance = Math.random() * 100 + 50;
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance;
+            
+            particle.style.setProperty('--tx', \`\${tx}px\`);
+            particle.style.setProperty('--ty', \`\${ty}px\`);
+            
+            if(fireworksContainer) fireworksContainer.appendChild(particle);
+            
+            setTimeout(function() {
+                particle.remove();
+            }, 1000);
+        }
+    }
+    
+    // Function to clear all fireworks and particles
+    function clearFireworks() {
+        if(fireworksContainer) fireworksContainer.innerHTML = '';
+    }
+});`,
+            language: 'javascript',
+            type: 'web'
         }
     })));
 
