@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FolkTech Mini IDE</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- CodeMirror CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/theme/material-darker.min.css"> <!-- Example theme -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/theme/neo.min.css"> <!-- A light theme option -->
+
+</head>
+<body>
+    <div id="top-menu-bar">
+        <div class="menu-item" id="menu-file-trigger">
+            File
+            <div class="dropdown-content" id="file-dropdown">
+                <a href="#" id="file-new-file">New File...</a>
+                <div class="dropdown-divider"></div>
+                <a href="#" id="file-open-file">Open File...</a>
+                <a href="#" id="file-open-folder">Open Folder...</a>
+                <div class="dropdown-divider"></div>
+                <a href="#" id="file-save-file">Save File...</a>
+                <a href="#" id="file-close-file">Close File</a>
+                <div class="dropdown-divider"></div>
+                <a href="#" id="file-reset-current">Reset Current File</a>
+                <a href="#" id="file-reset-all">Reset All Files (soon)</a>
+            </div>
+        </div>
+        <div class="menu-item" id="menu-edit-trigger">
+            Edit
+            <div class="dropdown-content" id="edit-dropdown">
+                <a href="#" id="edit-undo">Undo</a>
+                <a href="#" id="edit-redo">Redo</a>
+                <!-- <a href="#" id="edit-select-all">Select All (soon)</a> -->
+            </div>
+        </div>
+        <div class="menu-item" id="menu-view-trigger">
+            View
+            <div class="dropdown-content" id="view-dropdown">
+                <a href="#" id="view-toggle-sidebar">Toggle File Sidebar</a>
+                <a href="#" id="view-toggle-theme">Toggle Theme (Light/Dark)</a>
+                <a href="#" id="view-toggle-output">Toggle Output Area (soon)</a>
+            </div>
+        </div>
+        <div class="menu-item" id="menu-run">Run</div>
+        <div class="menu-item" id="menu-help-trigger">
+            Help
+            <div class="dropdown-content" id="help-dropdown">
+                <a href="#" id="help-about">About this IDE</a>
+            </div>
+        </div>
+    </div>
+    <div id="app-layout">
+        <div id="file-sidebar">
+            <h3>Files</h3>
+            <ul id="file-list">
+                <!-- File list will be populated by JS -->
+            </ul>
+        </div>
+
+        <div id="main-content">
+            <div id="tab-bar">
+                <!-- Tabs will be populated here by JS -->
+            </div>
+            <div id="editor-controls">
+                <button id="run-button">Run ▶</button>
+                <button id="reset-button">Reset File</button>
+            </div>
+            <div id="editor-container">
+                <!-- CodeMirror will attach here -->
+            </div>
+            <div id="web-preview-area">
+                <iframe title="Live Web Preview"></iframe>
+            </div>
+            <div id="terminal-log-output">
+                <!-- Python print() and IDE logs will go here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden file inputs -->
+    <input type="file" id="file-input-single" style="display: none;">
+    <input type="file" id="file-input-folder" style="display: none;" webkitdirectory multiple>
+
+    <!-- CodeMirror JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/markdown/markdown.min.js"></script> <!-- Using Markdown for FTAI basic highlighting -->
+    <!-- Pyodide (will be loaded dynamically later) -->
+    <!-- <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script> -->
+
+    <script src="script.js"></script>
+</body>
+</html> 

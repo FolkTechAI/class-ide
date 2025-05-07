@@ -1,0 +1,326 @@
+:root {
+    --body-bg: #ffffff;
+    --text-color: #000000;
+    --sidebar-bg: #f0f0f0;
+    --sidebar-text: #000000;
+    --sidebar-hover-bg: #e0e0e0;
+    --sidebar-active-bg: #c0c0c0;
+    --sidebar-border: #ccc;
+    --top-menu-bg: #444;
+    --top-menu-text: #ffffff;
+    --top-menu-hover-bg: #555;
+    --top-menu-border: #333;
+    --tab-bar-bg: #e8e8e8; /* Lighter for light theme */
+    --tab-item-bg: #f0f0f0;
+    --tab-item-text: #333;
+    --tab-item-hover-bg: #d8d8d8;
+    --tab-item-active-bg: #ffffff; /* Active tab light */
+    --tab-item-active-text: #000000;
+    --tab-border: #ccc;
+    --editor-controls-bg: #e8e8e8;
+    --editor-controls-border: #ccc;
+    --button-bg: #4CAF50;
+    --button-text: #ffffff;
+    --button-hover-bg: #45a049;
+    --output-area-border: #ccc;
+    --console-bg: #f5f5f5; /* Light console */
+    --console-text: #333;
+    --console-border: #ccc;
+    --preview-bg: #ffffff;
+}
+
+.dark-theme {
+    --body-bg: #282c34;
+    --text-color: #abb2bf;
+    --sidebar-bg: #21252b;
+    --sidebar-text: #abb2bf;
+    --sidebar-hover-bg: #3a3f4b;
+    --sidebar-active-bg: #4a4f5b;
+    --sidebar-border: #33373f;
+    --top-menu-bg: #333;
+    --top-menu-text: #ffffff;
+    --top-menu-hover-bg: #555;
+    --top-menu-border: #222;
+    --tab-bar-bg: #21252b; /* Darker for dark theme */
+    --tab-item-bg: #282c34;
+    --tab-item-text: #abb2bf;
+    --tab-item-hover-bg: #3a3f4b;
+    --tab-item-active-bg: #1c1e24; /* Active tab dark */
+    --tab-item-active-text: #ffffff;
+    --tab-border: #111;
+    --editor-controls-bg: #21252b;
+    --editor-controls-border: #33373f;
+    --button-bg: #008CBA; /* Different button color for dark */
+    --button-text: #ffffff;
+    --button-hover-bg: #007ba7;
+    --output-area-border: #33373f;
+    --console-bg: #282c34; /* Dark console (already was) */
+    --console-text: #abb2bf; /* Light text (already was) */
+    --console-border: #33373f;
+    --preview-bg: #1c1e24; /* Darker preview bg */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column; /* Changed to column for top menu */
+  height: 100vh;
+  overflow: hidden; /* Prevent body scrolling */
+  background-color: var(--body-bg);
+  color: var(--text-color);
+}
+
+#top-menu-bar {
+  background-color: var(--top-menu-bg); 
+  color: var(--top-menu-text);
+  padding: 8px 10px;
+  display: flex;
+  gap: 15px; /* Space between menu items */
+  border-bottom: 1px solid var(--top-menu-border);
+  font-size: 0.9em;
+}
+
+.menu-item {
+  cursor: pointer;
+  padding: 2px 5px;
+  position: relative; /* For dropdown positioning */
+}
+
+.menu-item:hover {
+  background-color: var(--top-menu-hover-bg);
+  border-radius: 3px;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--top-menu-hover-bg); /* Match hover for consistency */
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 0 0 3px 3px;
+  padding: 5px 0;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: var(--top-menu-text);
+  padding: 8px 12px;
+  text-decoration: none;
+  display: block;
+  font-size: 0.95em;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: var(--top-menu-bg)}
+
+.dropdown-divider {
+    height: 1px;
+    margin: 4px 0;
+    overflow: hidden;
+    background-color: var(--top-menu-border); /* Use border color for divider */
+}
+
+/* Style for when dropdown is active/shown via JS */
+.menu-item .dropdown-content.show {
+    display: block;
+}
+
+/* Adjust main content layout to be a row within the flex column */
+#app-layout {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden; /* Ensure app layout itself can scroll if needed, not body */
+}
+
+#file-sidebar {
+  width: 150px;
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  padding: 10px;
+  border-right: 1px solid var(--sidebar-border);
+  overflow-y: auto;
+}
+
+#file-sidebar h3 {
+  margin-bottom: 10px;
+}
+
+#file-sidebar ul {
+  list-style: none;
+}
+
+#file-sidebar li {
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+#file-sidebar li:hover {
+  background-color: var(--sidebar-hover-bg);
+}
+
+#file-sidebar li.active {
+  background-color: var(--sidebar-active-bg);
+  font-weight: bold;
+}
+
+#main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; 
+  /* min-height: 0; */ /* Adding this can sometimes help flex children scale properly in some browsers, test if needed */
+}
+
+#editor-controls {
+    padding: 5px 10px;
+    background-color: var(--editor-controls-bg);
+    border-bottom: 1px solid var(--editor-controls-border);
+    display: flex;
+    gap: 10px;
+}
+
+/* Style buttons within editor-controls consistently */
+#editor-controls button {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#editor-controls button:hover {
+    background-color: var(--button-hover-bg);
+}
+
+#editor-container {
+  flex-grow: 1; /* It should grow to fill available space first */
+  flex-shrink: 1; /* But allow it to shrink if other fixed-size elements need space */
+  position: relative; 
+  overflow: auto; 
+  border-bottom: 1px solid var(--editor-controls-border);
+  min-height: 150px; /* Maintain a minimum for usability */
+  /* display: flex; */ /* Usually not needed if CodeMirror attaches directly */
+}
+
+#web-preview-area { 
+  flex-grow: 10; /* Give it a much higher propensity to grow compared to editor */
+  flex-shrink: 1;
+  display: flex; 
+  flex-direction: column; /* To make iframe fill it */
+  border-top: 1px solid var(--output-area-border);
+  background-color: var(--preview-bg); 
+  overflow: hidden; 
+  min-width: 0; 
+  min-height: 100px; /* Give it a minimum height too */
+}
+
+#web-preview-area iframe {
+  flex-grow: 1; /* Make iframe itself grow within the web-preview-area */
+  width: 100%;
+  /* height: 100%; */ /* flex-grow should handle height within its flex parent */
+  border: none;
+}
+
+#terminal-log-output { 
+  height: 150px; 
+  background-color: var(--console-bg);
+  color: var(--console-text);
+  padding: 10px;
+  font-family: monospace;
+  white-space: pre-wrap;
+  overflow-y: auto; 
+  border-top: 1px solid var(--console-border);
+  flex-shrink: 0; /* Crucial: Prevent this from shrinking or growing unexpectedly */
+  flex-grow: 0;   /* Crucial: Prevent this from shrinking or growing unexpectedly */
+}
+
+/* Old styles for #live-preview and #console-output that were side-by-side can be removed or commented out if no longer used by other logic, but the variables are fine */
+/*
+#live-preview,
+#console-output {
+  flex-grow: 1;
+  width: 50%; 
+  overflow: auto;
+}
+
+#console-output {
+  border-left: 1px solid var(--console-border);
+}
+*/
+
+/* Hide elements initially - these specific IDs might change in JS to the new ones */
+#web-preview-area { /* By default, web preview might be hidden if no web file is active */
+    display: none;
+}
+
+#terminal-log-output { /* Console can be visible by default or hidden */
+    display: block; 
+}
+
+#tab-bar {
+    display: flex;
+    background-color: var(--tab-bar-bg); 
+    padding: 0px 5px; 
+    border-bottom: 1px solid var(--tab-border);
+    overflow-x: auto; /* Allow horizontal scrolling if many tabs */
+    white-space: nowrap; /* Prevent tabs from wrapping */
+    height: 35px; /* Fixed height for the tab bar */
+    min-width: 0; /* Help flex child with overflow:auto to scroll */
+}
+
+.tab-item {
+    padding: 8px 12px;
+    padding-right: 28px; /* Space for close button */
+    cursor: pointer;
+    border-right: 1px solid var(--tab-border);
+    color: var(--tab-item-text);
+    font-size: 0.85em;
+    position: relative; /* For close button positioning */
+    display: flex;
+    align-items: center;
+    max-width: 200px; /* Prevent tabs from getting too wide */
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    flex-shrink: 0; /* Prevent tabs from shrinking, force container to scroll */
+}
+
+.tab-item:hover {
+    background-color: var(--tab-item-hover-bg);
+    color: var(--tab-item-active-text); /* Ensure text is visible on hover */
+}
+
+.tab-item.active {
+    background-color: var(--tab-item-active-bg); 
+    color: var(--tab-item-active-text);
+    font-weight: bold;
+}
+
+.tab-close-btn {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--tab-item-text); /* Match tab text color */
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 4px;
+    line-height: 1;
+}
+
+.tab-close-btn:hover {
+    color: var(--tab-item-active-text); /* Brighter on hover */
+    background-color: var(--tab-item-hover-bg);
+    border-radius: 2px;
+} 
