@@ -4,12 +4,14 @@ import FileExplorer from "./components/FileExplorer";
 import MonacoEditor from "./components/MonacoEditor";
 import Terminal from "./components/Terminal";
 import AIAgentPanel from "./components/AIAgentPanel";
+import SettingsPanel from "./components/SettingsPanel";
 import "./App.css";
 
 function App() {
   const [activeFile, setActiveFile] = useState<string | null>(null);
   const [fileContent, setFileContent] = useState<string>("");
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [showSettings, setShowSettings] = useState(false);
 
   const handleFileSelect = (filePath: string, content: string) => {
     setActiveFile(filePath);
@@ -36,7 +38,10 @@ function App() {
           <span className="menu-item">Help</span>
         </div>
         <div className="menu-controls">
-          <button onClick={toggleTheme} className="theme-toggle">
+          <button onClick={() => setShowSettings(true)} className="settings-btn" title="Settings">
+            ⚙️
+          </button>
+          <button onClick={toggleTheme} className="theme-toggle" title="Toggle Theme">
             {isDarkMode ? '☀️' : '🌙'}
           </button>
         </div>
@@ -82,6 +87,14 @@ function App() {
           </Panel>
         </PanelGroup>
       </div>
+
+      {/* Settings Panel Overlay */}
+      {showSettings && (
+        <SettingsPanel 
+          isDarkMode={isDarkMode}
+          onClose={() => setShowSettings(false)}
+        />
+      )}
     </div>
   );
 }

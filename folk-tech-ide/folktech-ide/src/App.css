@@ -190,6 +190,7 @@ button {
   gap: 8px;
 }
 
+.settings-btn,
 .theme-toggle {
   background: transparent;
   border: none;
@@ -200,6 +201,7 @@ button {
   transition: background-color 0.2s;
 }
 
+.settings-btn:hover,
 .theme-toggle:hover {
   background-color: var(--bg-secondary);
 }
