@@ -1,0 +1,272 @@
+/* Terminal Styles */
+.terminal-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-primary);
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.terminal-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.terminal-icon {
+  font-size: 14px;
+}
+
+.terminal-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.terminal-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+
+.terminal-btn:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+/* Terminal Content */
+.terminal-content {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Xterm.js Overrides */
+.xterm {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.xterm-viewport {
+  overflow-y: auto !important;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) var(--bg-secondary);
+}
+
+.xterm-viewport::-webkit-scrollbar {
+  width: 8px;
+}
+
+.xterm-viewport::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+.xterm-viewport::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+.xterm-viewport::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+.xterm-screen {
+  padding: 8px 12px !important;
+}
+
+/* Terminal Text Selection */
+.xterm .xterm-selection div {
+  background-color: var(--accent-color) !important;
+  opacity: 0.3 !important;
+}
+
+/* Custom terminal styling */
+.terminal-welcome {
+  color: #4fc1ff;
+  font-weight: bold;
+}
+
+.terminal-prompt {
+  color: var(--accent-color);
+  font-weight: bold;
+}
+
+.terminal-command {
+  color: var(--text-primary);
+}
+
+.terminal-output {
+  color: var(--text-secondary);
+}
+
+.terminal-error {
+  color: var(--danger-color);
+}
+
+.terminal-success {
+  color: var(--success-color);
+}
+
+.terminal-warning {
+  color: var(--warning-color);
+}
+
+/* Loading State */
+.terminal-loading {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-primary);
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.terminal-loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-color);
+  border-top: 2px solid var(--accent-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 8px;
+}
+
+/* Terminal tabs (for multiple terminals) */
+.terminal-tabs {
+  display: flex;
+  background-color: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.terminal-tab {
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  color: var(--text-secondary);
+}
+
+.terminal-tab:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.terminal-tab.active {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent-color);
+  background-color: var(--bg-secondary);
+}
+
+.terminal-tab-close {
+  margin-left: 8px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.terminal-tab-close:hover {
+  opacity: 1;
+}
+
+/* Status indicators */
+.terminal-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.terminal-status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--success-color);
+}
+
+.terminal-status-indicator.disconnected {
+  background-color: var(--danger-color);
+}
+
+.terminal-status-indicator.connecting {
+  background-color: var(--warning-color);
+  animation: pulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+/* Command suggestions */
+.terminal-suggestions {
+  position: absolute;
+  bottom: 100%;
+  left: 8px;
+  right: 8px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  font-size: 12px;
+}
+
+.terminal-suggestion {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: var(--text-primary);
+}
+
+.terminal-suggestion:hover,
+.terminal-suggestion.selected {
+  background-color: var(--bg-tertiary);
+}
+
+.terminal-suggestion-command {
+  font-weight: 500;
+  color: var(--accent-color);
+}
+
+.terminal-suggestion-description {
+  color: var(--text-secondary);
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .terminal-content {
+    font-size: 12px;
+  }
+  
+  .terminal-header {
+    padding: 6px 8px;
+  }
+  
+  .xterm-screen {
+    padding: 6px 8px !important;
+  }
+} 
