@@ -4,6 +4,8 @@ import { FitAddon } from "@xterm/addon-fit";
 import { WebLinksAddon } from "@xterm/addon-web-links";
 import "@xterm/xterm/css/xterm.css";
 import "./Terminal.css";
+import { mcpFramework } from "../services/MCPFramework";
+import { memorySystem } from "../services/MemorySystem";
 
 interface TerminalProps {
   isDarkMode: boolean;
@@ -182,74 +184,180 @@ const Terminal: React.FC<TerminalProps> = ({ isDarkMode }) => {
     };
   };
 
-  const executeCommand = (command: string) => {
+  const executeCommand = async (command: string) => {
     const terminal = xtermRef.current;
     if (!terminal) return;
 
     const [cmd, ...args] = command.split(' ');
 
-    switch (cmd.toLowerCase()) {
-      case 'help':
-        terminal.writeln('Available commands:');
-        terminal.writeln('  \x1b[1;32mhelp\x1b[0m           - Show this help message');
-        terminal.writeln('  \x1b[1;32mclear\x1b[0m          - Clear the terminal');
-        terminal.writeln('  \x1b[1;32mai\x1b[0m <query>     - Query AI agents');
-        terminal.writeln('  \x1b[1;32mserena\x1b[0m <task>   - Interact with Serena orchestrator');
-        terminal.writeln('  \x1b[1;32mftai\x1b[0m <file>     - Parse .ftai file');
-        terminal.writeln('  \x1b[1;32mgit\x1b[0m <command>   - Execute git commands');
-        terminal.writeln('  \x1b[1;32mnpm\x1b[0m <command>   - Execute npm commands');
-        break;
+    try {
+      switch (cmd.toLowerCase()) {
+        case 'help':
+          terminal.writeln('\x1b[1;36m📋 FolkTech IDE - AI-Native Terminal\x1b[0m');
+          terminal.writeln('');
+          terminal.writeln('\x1b[1;33m🤖 AI Commands:\x1b[0m');
+          terminal.writeln('  \x1b[1;32mai generate\x1b[0m <prompt>   - Generate code or content');
+          terminal.writeln('  \x1b[1;32mai validate\x1b[0m <code>     - Validate and review code');
+          terminal.writeln('  \x1b[1;32mai debug\x1b[0m <error>      - Debug issues and errors');
+          terminal.writeln('  \x1b[1;32mai status\x1b[0m             - Show AI system status');
+          terminal.writeln('');
+          terminal.writeln('\x1b[1;33m🔧 MCP Framework:\x1b[0m');
+          terminal.writeln('  \x1b[1;32mmcp status\x1b[0m            - Show MCP framework status');
+          terminal.writeln('  \x1b[1;32mmcp agents\x1b[0m            - List all agents');
+          terminal.writeln('  \x1b[1;32mmcp tasks\x1b[0m             - Show task history');
+          terminal.writeln('  \x1b[1;32mmcp clear\x1b[0m             - Clear task history');
+          terminal.writeln('');
+          terminal.writeln('\x1b[1;33m📄 .ftai Commands:\x1b[0m');
+          terminal.writeln('  \x1b[1;32mftai parse\x1b[0m <content>   - Parse .ftai content');
+          terminal.writeln('  \x1b[1;32mftai validate\x1b[0m <content> - Validate .ftai document');
+          terminal.writeln('  \x1b[1;32mftai create\x1b[0m task <goal> - Create task template');
+          terminal.writeln('');
+          terminal.writeln('\x1b[1;33m💾 Memory System:\x1b[0m');
+          terminal.writeln('  \x1b[1;32mmemory search\x1b[0m <query>  - Search memory entries');
+          terminal.writeln('  \x1b[1;32mmemory stats\x1b[0m          - Show memory statistics');
+          terminal.writeln('  \x1b[1;32mmemory clear\x1b[0m          - Clear old entries');
+          terminal.writeln('');
+          terminal.writeln('\x1b[1;33m⚡ System:\x1b[0m');
+          terminal.writeln('  \x1b[1;32mclear\x1b[0m                 - Clear terminal');
+          terminal.writeln('  \x1b[1;32mhelp\x1b[0m                  - Show this help');
+          terminal.writeln('');
+          break;
 
-      case 'clear':
-        terminal.clear();
-        break;
+        case 'clear':
+          terminal.clear();
+          break;
 
-      case 'ai':
-        if (args.length === 0) {
-          terminal.writeln('\x1b[1;31mError:\x1b[0m Please provide a query for AI agents');
-        } else {
-          const query = args.join(' ');
-          terminal.writeln(`\x1b[1;36mAI Query:\x1b[0m ${query}`);
-          terminal.writeln('\x1b[33m[Serena]\x1b[0m Routing query to appropriate model...');
-          // TODO: Implement actual AI query routing
-          setTimeout(() => {
-            terminal.writeln('\x1b[32m[Claude]\x1b[0m AI integration not yet implemented.');
-            terminal.writeln('This will route to Claude Sonnet, GPT-4o, or Gemini based on task type.');
-          }, 500);
-        }
-        break;
+        case 'ai':
+        case 'mcp':
+        case 'ftai':
+          terminal.writeln('\x1b[33m🔄 Processing...\x1b[0m');
+          
+          const result = await mcpFramework.handleTerminalCommand(cmd, args);
+          
+          // Store the interaction in memory
+          await memorySystem.storeAIInteraction(
+            command,
+            result,
+            'terminal',
+            cmd
+          );
+          
+          // Format output with colors
+          const lines = result.split('\n');
+          for (const line of lines) {
+            if (line.includes('[MOCK')) {
+              terminal.writeln(`\x1b[33m${line}\x1b[0m`);
+            } else if (line.includes('Error:') || line.includes('❌')) {
+              terminal.writeln(`\x1b[31m${line}\x1b[0m`);
+            } else if (line.includes('✅') || line.includes('Connected')) {
+              terminal.writeln(`\x1b[32m${line}\x1b[0m`);
+            } else if (line.includes('Model:') || line.includes('Agent:')) {
+              terminal.writeln(`\x1b[36m${line}\x1b[0m`);
+            } else {
+              terminal.writeln(line);
+            }
+          }
+          break;
 
-      case 'serena':
-        terminal.writeln('\x1b[1;35m[Serena Orchestrator]\x1b[0m Initializing...');
-        terminal.writeln('🤖 Serena task orchestration not yet implemented');
-        terminal.writeln('Will handle: task validation, model routing, memory access');
-        break;
+        case 'memory':
+          await handleMemoryCommand(args, terminal);
+          break;
 
-      case 'ftai':
-        if (args.length === 0) {
-          terminal.writeln('\x1b[1;31mError:\x1b[0m Please specify a .ftai file to parse');
-        } else {
-          const filename = args[0];
-          terminal.writeln(`\x1b[1;36mParsing:\x1b[0m ${filename}`);
-          terminal.writeln('📄 .ftai parser not yet implemented');
-          terminal.writeln('Will validate schema and extract @tags');
-        }
-        break;
+        case 'git':
+          terminal.writeln(`\x1b[1;32mgit\x1b[0m ${args.join(' ')}`);
+          terminal.writeln('\x1b[33m🔧 Git integration not yet implemented\x1b[0m');
+          terminal.writeln('Coming in Phase 4: Full git workflow integration');
+          break;
 
-      case 'git':
-        terminal.writeln(`\x1b[1;32mgit\x1b[0m ${args.join(' ')}`);
-        terminal.writeln('🔧 Git integration not yet implemented');
-        break;
+        case 'npm':
+          terminal.writeln(`\x1b[1;32mnpm\x1b[0m ${args.join(' ')}`);
+          terminal.writeln('\x1b[33m📦 NPM integration not yet implemented\x1b[0m');
+          terminal.writeln('Coming in Phase 4: Package management integration');
+          break;
 
-      case 'npm':
-        terminal.writeln(`\x1b[1;32mnpm\x1b[0m ${args.join(' ')}`);
-        terminal.writeln('📦 NPM integration not yet implemented');
-        break;
+        default:
+          terminal.writeln(`\x1b[1;31mCommand not found:\x1b[0m ${cmd}`);
+          terminal.writeln('Type \x1b[1;32mhelp\x1b[0m for available commands');
+          break;
+      }
+    } catch (error) {
+      terminal.writeln(`\x1b[1;31m❌ Error executing command:\x1b[0m ${error instanceof Error ? error.message : 'Unknown error'}`);
+      
+      // Log error to memory system
+      await memorySystem.storeLog('error', `Terminal command failed: ${command}`, { 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      });
+    }
+  };
 
-      default:
-        terminal.writeln(`\x1b[1;31mCommand not found:\x1b[0m ${cmd}`);
-        terminal.writeln('Type \x1b[1;32mhelp\x1b[0m for available commands');
-        break;
+  const handleMemoryCommand = async (args: string[], terminal: XTerm) => {
+    if (args.length === 0) {
+      terminal.writeln('\x1b[1;33m💾 Memory System Commands:\x1b[0m');
+      terminal.writeln('  \x1b[1;32mmemory search\x1b[0m <query>  - Search memory entries');
+      terminal.writeln('  \x1b[1;32mmemory stats\x1b[0m          - Show memory statistics');
+      terminal.writeln('  \x1b[1;32mmemory clear\x1b[0m          - Clear old entries (30+ days)');
+      terminal.writeln('  \x1b[1;32mmemory export\x1b[0m         - Export all memories');
+      return;
+    }
+
+    const subcommand = args[0];
+    const remainingArgs = args.slice(1);
+
+    try {
+      switch (subcommand) {
+        case 'search':
+          if (remainingArgs.length === 0) {
+            terminal.writeln('\x1b[31m❌ Usage:\x1b[0m memory search <query>');
+            return;
+          }
+          
+          terminal.writeln('\x1b[33m🔍 Searching memories...\x1b[0m');
+          const searchResult = await memorySystem.search({
+            query: remainingArgs.join(' '),
+            limit: 10
+          });
+          
+          terminal.writeln(`\x1b[32mFound ${searchResult.totalCount} matches:\x1b[0m`);
+          terminal.writeln('');
+          
+          for (const entry of searchResult.entries) {
+            terminal.writeln(`\x1b[36m📋 ${entry.title}\x1b[0m \x1b[90m(${entry.type})\x1b[0m`);
+            terminal.writeln(`   ${entry.content.substring(0, 100)}...`);
+            terminal.writeln(`   \x1b[90m📅 ${new Date(entry.timestamp).toLocaleString()}\x1b[0m`);
+            terminal.writeln('');
+          }
+          break;
+
+        case 'stats':
+          terminal.writeln('\x1b[1;33m📊 Memory System Statistics:\x1b[0m');
+          const stats = await memorySystem.getStats();
+          terminal.writeln(`\x1b[32mTotal Memories:\x1b[0m ${stats.totalMemories}`);
+          terminal.writeln('');
+          terminal.writeln('\x1b[36mBy Type:\x1b[0m');
+          Object.entries(stats.typeCounts).forEach(([type, count]) => {
+            terminal.writeln(`  ${type}: \x1b[32m${count}\x1b[0m`);
+          });
+          break;
+
+        case 'clear':
+          terminal.writeln('\x1b[33m🧹 Clearing old memories (30+ days)...\x1b[0m');
+          const deletedCount = await memorySystem.cleanupOldEntries(30);
+          terminal.writeln(`\x1b[32m✅ Deleted ${deletedCount} old entries\x1b[0m`);
+          break;
+
+        case 'export':
+          terminal.writeln('\x1b[33m📤 Exporting memories...\x1b[0m');
+          await memorySystem.exportMemories();
+          terminal.writeln('\x1b[32m✅ Export completed\x1b[0m (download functionality coming soon)');
+          break;
+
+        default:
+          terminal.writeln(`\x1b[31m❌ Unknown memory subcommand:\x1b[0m ${subcommand}`);
+          terminal.writeln('Type \x1b[1;32mmemory\x1b[0m for available commands');
+          break;
+      }
+    } catch (error) {
+      terminal.writeln(`\x1b[31m❌ Memory command failed:\x1b[0m ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 

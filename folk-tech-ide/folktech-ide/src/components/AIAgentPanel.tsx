@@ -1,9 +1,7 @@
 import { useState } from "react";
 import "./AIAgentPanel.css";
 
-interface AIAgentPanelProps {
-  isDarkMode: boolean;
-}
+interface AIAgentPanelProps {}
 
 interface AIAgent {
   name: string;
@@ -21,7 +19,7 @@ interface ChatMessage {
   type: 'user' | 'agent' | 'system';
 }
 
-const AIAgentPanel: React.FC<AIAgentPanelProps> = ({ isDarkMode }) => {
+const AIAgentPanel: React.FC<AIAgentPanelProps> = () => {
   const [activeTab, setActiveTab] = useState<'agents' | 'chat' | 'memory'>('agents');
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>([

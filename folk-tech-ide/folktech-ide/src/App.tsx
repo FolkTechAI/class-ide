@@ -83,7 +83,7 @@ function App() {
           
           {/* Right Sidebar - AI Agent Panel */}
           <Panel defaultSize={20} minSize={15} maxSize={40}>
-            <AIAgentPanel isDarkMode={isDarkMode} />
+            <AIAgentPanel />
           </Panel>
         </PanelGroup>
       </div>
@@ -91,7 +91,6 @@ function App() {
       {/* Settings Panel Overlay */}
       {showSettings && (
         <SettingsPanel 
-          isDarkMode={isDarkMode}
           onClose={() => setShowSettings(false)}
         />
       )}

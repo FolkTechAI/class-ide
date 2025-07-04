@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { invoke } from "@tauri-apps/api/core";
 import "./SettingsPanel.css";
 
 interface ModelConfig {
@@ -21,16 +20,15 @@ interface ModelConfig {
 }
 
 interface SettingsPanelProps {
-  isDarkMode: boolean;
   onClose: () => void;
 }
 
-const SettingsPanel: React.FC<SettingsPanelProps> = ({ isDarkMode, onClose }) => {
+const SettingsPanel: React.FC<SettingsPanelProps> = ({ onClose }) => {
   const [activeTab, setActiveTab] = useState<'models' | 'api-keys' | 'config' | 'about'>('models');
   const [models, setModels] = useState<ModelConfig[]>([]);
   const [selectedModel, setSelectedModel] = useState<string>('');
   const [configPath, setConfigPath] = useState<string>('local');
-  const [isLoading, setIsLoading] = useState(false);
+
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
   useEffect(() => {
@@ -104,7 +102,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ isDarkMode, onClose }) =>
 
   const loadConfiguration = async () => {
     try {
-      setIsLoading(true);
+
       // Try to load from saved config, fallback to defaults
       const savedConfig = localStorage.getItem('folktech-ide-models');
       if (savedConfig) {
@@ -120,7 +118,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ isDarkMode, onClose }) =>
       console.error('Failed to load configuration:', error);
       setModels(defaultModels);
     } finally {
-      setIsLoading(false);
+
     }
   };
 
@@ -192,7 +190,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ isDarkMode, onClose }) =>
       
       if (file.name.endsWith('.ftai')) {
         // Parse .ftai format
-        const lines = text.split('\n');
+        // Parse .ftai format (placeholder for future implementation)
         // TODO: Implement proper .ftai parser
         config = { models: defaultModels };
       } else {
